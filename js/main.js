@@ -9,19 +9,55 @@ document.addEventListener("DOMContentLoaded", async () => {
         gamesData = data.data;
         console.log("Datos cargados:", gamesData);
         
-        // Inicializar la página con los juegos de la serie principal
-        displayGames("main");
+        // 3. Funcionalidad de pestañas con localStorage
+        const mainSeriesTab = document.querySelector(".section_tabs div a:first-child");
+        const spinOffsTab = document.querySelector(".section_tabs div a:last-child");
+
+        // Verificar si hay una pestaña guardada en localStorage
+        const savedTab = localStorage.getItem("selectedTab") || "main";
+        displayGames(savedTab);
+        
+        // Resaltar la pestaña guardada
+        if (savedTab === "main") {
+            highlightTab(mainSeriesTab, spinOffsTab);
+        } else {
+            highlightTab(spinOffsTab, mainSeriesTab);
+        }
+        
+        mainSeriesTab.addEventListener("click", (e) => {
+            e.preventDefault();
+            displayGames("main");
+            highlightTab(mainSeriesTab, spinOffsTab);
+            // Guardar selección en localStorage
+            localStorage.setItem("selectedTab", "main");
+        });
+        
+        spinOffsTab.addEventListener("click", (e) => {
+            e.preventDefault();
+            displayGames("spinoff");
+            highlightTab(spinOffsTab, mainSeriesTab);
+            // Guardar selección en localStorage
+            localStorage.setItem("selectedTab", "spinoff");
+        });
+        
     } catch (error) {
         console.error("Error al cargar datos:", error);
     }
 
-    // 1. Funcionalidad para ocultar el mensaje de spoiler
+    // 1. Funcionalidad para ocultar el mensaje de spoiler con localStorage
     const dismissButton = document.querySelector(".header_warning_close a");
     const warningMessage = document.querySelector(".header_warning");
+    
+    // Verificar si el usuario ya cerró el mensaje anteriormente
+    if (localStorage.getItem("spoilerDismissed") === "true") {
+        warningMessage.style.display = "none";
+    }
     
     dismissButton.addEventListener("click", (e) => {
         e.preventDefault();
         warningMessage.style.display = "none";
+        // Guardar en localStorage que el usuario cerró el mensaje
+        localStorage.setItem("spoilerDismissed", "true");
     });
 
     // 2. Funcionalidad de búsqueda
@@ -34,6 +70,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         
         if (searchTerm === "") return;
         
+        // Guardar búsquedas recientes en localStorage (máximo 5)
+        saveRecentSearch(searchTerm);
+        
         const filteredGames = gamesData.filter(game => 
             game.name.toLowerCase().includes(searchTerm) || 
             (game.description && game.description.toLowerCase().includes(searchTerm))
@@ -41,22 +80,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         
         displaySearchResults(filteredGames);
     });
-
-    // 3. Funcionalidad de pestañas
-    const mainSeriesTab = document.querySelector(".section_tabs div a:first-child");
-    const spinOffsTab = document.querySelector(".section_tabs div a:last-child");
     
-    mainSeriesTab.addEventListener("click", (e) => {
-        e.preventDefault();
-        displayGames("main");
-        highlightTab(mainSeriesTab, spinOffsTab);
-    });
-    
-    spinOffsTab.addEventListener("click", (e) => {
-        e.preventDefault();
-        displayGames("spinoff");
-        highlightTab(spinOffsTab, mainSeriesTab);
-    });
+    // Función para guardar búsquedas recientes
+    function saveRecentSearch(term) {
+        let recentSearches = JSON.parse(localStorage.getItem("recentSearches") || "[]");
+        
+        // Evitar duplicados
+        if (!recentSearches.includes(term)) {
+            // Agregar al inicio
+            recentSearches.unshift(term);
+            
+            // Mantener solo las 5 búsquedas más recientes
+            if (recentSearches.length > 5) {
+                recentSearches = recentSearches.slice(0, 5);
+            }
+            
+            localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
+        }
+    }
     
     // Función para resaltar la pestaña activa
     function highlightTab(activeTab, inactiveTab) {
@@ -65,9 +106,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         inactiveTab.style.backgroundColor = "#245681";
         inactiveTab.style.transform = "scale(1)";
     }
-    
-    // Inicializar con la pestaña de serie principal activa
-    highlightTab(mainSeriesTab, spinOffsTab);
 
     // Función para mostrar juegos según el tipo
     function displayGames(type) {
@@ -169,8 +207,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         titlesContainer.appendChild(rightColumn);
     }
     
-    // Función para crear una tarjeta de juego
+    // Función para crear una tarjeta de juego con botón de favorito
     function createGameCard(game) {
+        const gameContainer = document.createElement("div");
+        gameContainer.className = "game-card-container";
+        gameContainer.style.position = "relative";
+        gameContainer.style.display = "inline-block";
+        gameContainer.style.margin = "10px 0";
+        
         const gameLink = document.createElement("a");
         gameLink.href = `views/game-details.html?id=${game.id}`;
         
@@ -188,7 +232,103 @@ document.addEventListener("DOMContentLoaded", async () => {
         gameImage.title = game.name;
         
         gameLink.appendChild(gameImage);
-        return gameLink;
+        gameContainer.appendChild(gameLink);
+        
+        // Verificar si el juego está en favoritos
+        const favorites = JSON.parse(localStorage.getItem("favoriteGames") || "[]");
+        const isFavorite = favorites.some(fav => fav.id === game.id);
+        
+        // Crear botón de favorito
+        const favButton = document.createElement("button");
+        favButton.className = "favorite-button";
+        favButton.innerHTML = isFavorite ? "★" : "☆"; // Estrella llena o vacía
+        favButton.style.position = "absolute";
+        favButton.style.top = "5px";
+        favButton.style.right = "5px";
+        favButton.style.background = isFavorite ? "gold" : "white";
+        favButton.style.border = "none";
+        favButton.style.borderRadius = "50%";
+        favButton.style.width = "30px";
+        favButton.style.height = "30px";
+        favButton.style.cursor = "pointer";
+        favButton.style.fontSize = "20px";
+        favButton.style.display = "flex";
+        favButton.style.justifyContent = "center";
+        favButton.style.alignItems = "center";
+        favButton.style.zIndex = "10";
+        
+        favButton.addEventListener("click", (e) => {
+            e.preventDefault(); // Evitar que se active el enlace
+            e.stopPropagation(); // Evitar que el evento se propague
+            
+            toggleFavorite(game, favButton);
+        });
+        
+        gameContainer.appendChild(favButton);
+        
+        return gameContainer;
+    }
+    
+    // Función para alternar el estado de favorito de un juego
+    function toggleFavorite(game, button) {
+        let favorites = JSON.parse(localStorage.getItem("favoriteGames") || "[]");
+        
+        // Verificar si el juego ya está en favoritos
+        const index = favorites.findIndex(fav => fav.id === game.id);
+        
+        if (index === -1) {
+            // Agregar a favoritos
+            favorites.push({
+                id: game.id,
+                name: game.name,
+                shortName: getShortGameName(game.name)
+            });
+            button.innerHTML = "★"; // Estrella llena
+            button.style.background = "gold";
+            showToast(`${game.name} agregado a favoritos`);
+        } else {
+            // Quitar de favoritos
+            favorites.splice(index, 1);
+            button.innerHTML = "☆"; // Estrella vacía
+            button.style.background = "white";
+            showToast(`${game.name} eliminado de favoritos`);
+        }
+        
+        // Guardar en localStorage
+        localStorage.setItem("favoriteGames", JSON.stringify(favorites));
+    }
+    
+    // Función para mostrar un mensaje toast
+    function showToast(message) {
+        // Crear elemento toast
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.textContent = message;
+        
+        // Estilos para el toast
+        toast.style.position = "fixed";
+        toast.style.bottom = "20px";
+        toast.style.left = "50%";
+        toast.style.transform = "translateX(-50%)";
+        toast.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+        toast.style.color = "white";
+        toast.style.padding = "10px 20px";
+        toast.style.borderRadius = "5px";
+        toast.style.zIndex = "1000";
+        
+        // Agregar al DOM
+        document.body.appendChild(toast);
+        
+        // Eliminar después de 3 segundos
+        setTimeout(() => {
+            toast.style.opacity = "0";
+            toast.style.transition = "opacity 0.5s ease";
+            
+            // Eliminar del DOM después de la transición
+            setTimeout(() => {
+                document.body.removeChild(toast);
+            }, 500);
+        }, 3000);
     }
     
     // Función para obtener el nombre corto del juego para las imágenes
@@ -235,4 +375,78 @@ document.addEventListener("DOMContentLoaded", async () => {
             window.location.href = `views/category.html?type=${category}`;
         });
     });
+    
+    // Agregar botón para ver favoritos
+    createFavoritesButton();
+    
+    // Función para crear botón de favoritos
+    function createFavoritesButton() {
+        const mainSection = document.querySelector("main");
+        const tabsSection = document.querySelector(".section_tabs");
+        
+        const favButton = document.createElement("button");
+        favButton.textContent = "Ver Juegos Favoritos";
+        favButton.className = "favorites-button";
+        favButton.style.display = "block";
+        favButton.style.margin = "20px auto";
+        favButton.style.padding = "10px 20px";
+        favButton.style.backgroundColor = "#245681";
+        favButton.style.color = "white";
+        favButton.style.border = "none";
+        favButton.style.borderRadius = "5px";
+        favButton.style.cursor = "pointer";
+        favButton.style.fontSize = "16px";
+        
+        favButton.addEventListener("click", () => {
+            displayFavoriteGames();
+        });
+        
+        mainSection.insertBefore(favButton, tabsSection.nextSibling);
+    }
+    
+    // Función para mostrar juegos favoritos
+    function displayFavoriteGames() {
+        const favorites = JSON.parse(localStorage.getItem("favoriteGames") || "[]");
+        
+        if (favorites.length === 0) {
+            showToast("No tienes juegos favoritos guardados");
+            return;
+        }
+        
+        const titlesContainer = document.querySelector(".section_titles");
+        titlesContainer.innerHTML = "";
+        
+        // Título para la sección
+        const title = document.createElement("h2");
+        title.textContent = "Tus Juegos Favoritos";
+        title.style.color = "gold";
+        title.style.textAlign = "center";
+        title.style.margin = "20px 0";
+        titlesContainer.appendChild(title);
+        
+        // Crear contenedor para las imágenes
+        const leftColumn = document.createElement("div");
+        leftColumn.className = "section_titles_images";
+        
+        const rightColumn = document.createElement("div");
+        rightColumn.className = "section_titles_images";
+        
+        // Buscar los juegos favoritos en los datos completos
+        favorites.forEach((favorite, index) => {
+            const game = gamesData.find(g => g.id === favorite.id);
+            
+            if (game) {
+                const gameCard = createGameCard(game);
+                
+                if (index % 2 === 0) {
+                    leftColumn.appendChild(gameCard);
+                } else {
+                    rightColumn.appendChild(gameCard);
+                }
+            }
+        });
+        
+        titlesContainer.appendChild(leftColumn);
+        titlesContainer.appendChild(rightColumn);
+    }
 });
