@@ -1,29 +1,33 @@
-*{
+* {
     margin: 0 auto;
     padding: 0;
     box-sizing: border-box;
-    /* outline: 1px solid tomato; */
 }
 
-body{
+body {
     height: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    /* align-items: center; */
     justify-content: center;
     background-color: #336089;
     z-index: 0;
+    animation: fadeIn 1.2s ease-in-out;
 }
 
-header{
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+header {
     width: 100%;
     display: grid;
-    grid-column: 1 / 5;
+    grid-column: 1 / span 3;
     z-index: 1;
 }
 
-.header_warning{
+.header_warning {
     display: flex;
     margin: 20px;
     width: 96%;
@@ -32,14 +36,12 @@ header{
     gap: 50px;
 }
 
-.header_warning_image{
-    img{
-        width: 180px;
-        height: 120px;
-    }
+.header_warning_image img {
+    width: 180px;
+    height: 120px;
 }
 
-.header_warning_content{
+.header_warning_content {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -47,110 +49,209 @@ header{
     color: white;
 }
 
-.header_warning_close{
+.header_warning_close {
     margin-top: 10px;
-    a{
-        color: white;
-        text-decoration: none;
-    }
 }
 
-.logo_class{
+.header_warning_close a {
+    color: white;
+    text-decoration: none;
+}
+
+.logo_class {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.logo_class_image{
+.logo_class_image {
     margin-top: 20px;
-    img{
-        width: 500px;
-        height: 120px;
-    }
 }
 
-.logo_class_form{
+.logo_class_image img {
+    width: 500px;
+    height: 120px;
+}
+
+.logo_class_form {
     display: flex;
     gap: 20px;
-    input{
-        width: 720px;
-        height: 30px;
-    }
-    button{
-        padding: 5px 10px;
-        cursor: pointer;
-    }
 }
 
-main{
+.logo_class_form input {
+    width: 720px;
+    height: 30px;
+}
+
+.logo_class_form button {
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+main {
     width: 100%;
     display: grid;
-    grid-column: 1 / 5;
+    grid-column: 1 / span 3;
     z-index: 1;
     margin-top: 30px;
 }
 
-.section_tabs{
-    width: 90%;
-    div{
-        display: flex;
-        gap: 40px;
-        a{
-            padding: 20px 80px;
-            background-color: #245681;
-            border: 1px solid white;
-            border-radius: 10px;
-            color: white;
-            text-decoration: none;
-            font-size: 20px;
-            box-shadow: 2px 2px 5px black;
-            cursor: pointer;
-        }
-    }
+.section_tabs div {
+    display: flex;
+    gap: 40px;
 }
 
-.section_titles{
-    width: 100%;
+.section_tabs div a {
+    padding: 20px 80px;
+    background-color: #245681;
+    border: 1px solid white;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    box-shadow: 2px 2px 5px black;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.section_titles {
     display: flex;
     padding: 10px;
     gap: 40px;
     margin-top: 30px;
-    grid-column: auto;
 }
 
-.section_titles_images{
+.section_titles_images {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.section_categories{
-    width: 90%;
+.section_titles_images a img {
+    transition: transform 0.3s ease;
+}
+
+.section_titles_images a img:hover {
+    transform: scale(1.1);
+}
+
+.section_categories {
     margin-top: 40px;
-    h3{
-        display: flex;
+}
+
+.section_categories h3 {
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+    color: gold;
+}
+
+.categories_group {
+    margin-top: 40px;
+    display: flex;
+    gap: 150px;
+}
+
+.categories_group div {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.categories_group div a {
+    padding: 10px 90px;
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    box-shadow: 2px 2px 5px black;
+    cursor: pointer;
+    background-color: #245681;
+    transition: all 0.3s ease;
+}
+
+.section_tabs a:hover,
+.categories_group div a:hover,
+.logo_class_form button:hover {
+    background-color: #1c4668;
+    transform: scale(1.05);
+    box-shadow: 4px 4px 10px black;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .logo_class_image img {
+        width: 100%;
+        height: auto;
+    }
+
+    .logo_class_form {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .logo_class_form input {
+        width: 100%;
+    }
+
+    .section_titles {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .section_titles_images {
+        flex-direction: row;
+        flex-wrap: wrap;
         justify-content: center;
-        font-size: 24px;
-        color: gold;
+    }
+
+    .section_titles_images a img {
+        width: 100px;
+        height: auto;
+    }
+
+    .categories_group {
+        flex-direction: column;
+        gap: 40px;
+        align-items: center;
+    }
+
+    .categories_group div {
+        flex-direction: column;
+    }
+
+    .categories_group div a {
+        padding: 10px 40px;
+        text-align: center;
+    }
+
+    .section_tabs div {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .section_tabs div a {
+        width: 80%;
+        text-align: center;
     }
 }
 
-.categories_group{
-    margin-top: 15px;
-    display: flex;
-    div{
-        display: flex;
-        gap: 20px;
-        justify-content: center;
+@media (max-width: 600px) {
+    .header_warning {
+        flex-direction: column;
         align-items: center;
-        a{
-            padding: 10px 90px;
-            color: white;
-            text-decoration: none;
-            font-size: 20px;
-            box-shadow: 2px 2px 5px black;
-            cursor: pointer;
-            background-color: #245681;
-        }
+        text-align: center;
+        gap: 20px;
+    }
+
+    .header_warning_image img {
+        width: 100px;
+        height: auto;
+    }
+
+    .logo_class_form input {
+        height: 40px;
     }
 }
