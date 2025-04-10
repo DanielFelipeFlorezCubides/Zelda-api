@@ -4,94 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tloz Wiki</title>
+    <link rel="stylesheet" href="./style/style.css">
     <link rel="icon" href="./storage/img/Trifuerza.jpg" type="image/icon">
     <script src="./js/main.js" defer type="module"></script>
 </head>
 <body>
     <header>
-        <div>
-            <div><img src="./storage/img/navi.png"></div>
-            <div>
+        <div class="header_warning">
+            <div class="header_warning_image"><img src="./storage/img/navi.png"></div>
+            <div class="header_warning_content">
                 <h1>Hey! Listen!</h1>
                 <h2>This wiki contains spoilers! Read at your own risk!</h2>
             </div>
-            <div><a href="#">[dismiss]</a></div>
+            <div class="header_warning_close"><a href="#">[dismiss]</a></div>
         </div>
 
-        <div>
-            <img src="">
-            <form>
+        <div class="logo_class">
+            <div class="logo_class_image">
+                <img src="./storage/img/Logo.avif">
+            </div>
+            <form class="logo_class_form">
                 <input type="text">
                 <button type="submit">Search</button>
             </form>
         </div>
     </header>
     <main>
-        <section>
+        <section class="section_tabs">
             <div>
                 <a href="#">Main Series</a>
                 <a href="#">Spin-Offs</a>
             </div>
         </section>
 
-        <section>
-            <div>
-                <a href="#"><img src="./storage/img/Zelda_BOTW.png" alt="The legend of zelda breath of the wild image"></a>
+        <section class="section_titles">
+            <div class="section_titles_images">
                 <a href="#"><img src="./storage/img/Zelda_TFH.png" alt="The legend of zelda Tri force heroes image"></a>
-                <a href="#"><img src="./storage/img/Zelda_SW.png" alt="The legend of zelda Skyward sword image"></a>
                 <a href="#"><img src="./storage/img/Zelda_ST.png" alt="The legend of zelda spirit tracks image"></a>
-                <a href="#"><img src="./storage/img/Zelda_PH.png" alt="The legend of zelda Phantom hourglass image"></a>
                 <a href="#"><img src="./storage/img/Zelda_TP.png" alt="The legend of zelda Twilight princess image"></a>
                 <a href="#"><img src="./storage/img/Zelda_FSA.png" alt="The legend of zelda Four swords adventures image"></a>
-                <a href="#"><img src="./storage/img/Zelda_WW.png" alt="The legend of zelda The wind waker image"></a>
                 <a href="#"><img src="./storage/img/Zelda_FS.png" alt="The legend of zelda Four swords image"></a>
-                <a href="#"><img src="./storage/img/Zelda_OoA.png" alt="The legend of zelda Oracle of ages image"></a>
                 <a href="#"><img src="./storage/img/Zelda_OoS.png" alt="The legend of zelda Oracle of seasons image"></a>
-                <a href="#"><img src="./storage/img/Zelda_MM.png" alt="The legend of zelda Majora's mask image"></a>
                 <a href="#"><img src="./storage/img/Zelda_Oot.png" alt="The legend of zelda Ocarina of time image"></a>
-                <a href="#"><img src="./storage/img/Zelda_LA.png" alt="The legend of zelda Link's awakening image"></a>
                 <a href="#"><img src="./storage/img/Zelda_ALTP.png" alt="The legend of zelda A link to the past image"></a>
-                <a href="#"><img src="./storage/img/Zelda 2.png" alt="Zelda 2: adventure of link image"></a>
                 <a href="#"><img src="./storage/img/Zelda.png" alt="The legend of zelda image"></a>
             </div>
+            
+            <div class="section_titles_images">
+                <a href="#"><img src="./storage/img/Zelda_BOTW.png" alt="The legend of zelda breath of the wild image"></a>
+                <a href="#"><img src="./storage/img/Zelda_SW.png" alt="The legend of zelda Skyward sword image"></a>
+                <a href="#"><img src="./storage/img/Zelda_PH.png" alt="The legend of zelda Phantom hourglass image"></a>
+                <a href="#"><img src="./storage/img/Zelda_MC.png" alt="The legend of zelda Minish cap image"></a>
+                <a href="#"><img src="./storage/img/Zelda_WW.png" alt="The legend of zelda The wind waker image"></a>
+                <a href="#"><img src="./storage/img/Zelda_OoA.png" alt="The legend of zelda Oracle of ages image"></a>
+                <a href="#"><img src="./storage/img/Zelda_MM.png" alt="The legend of zelda Majora's mask image"></a>
+                <a href="#"><img src="./storage/img/Zelda_LA.png" alt="The legend of zelda Link's awakening image"></a>
+                <a href="#"><img src="./storage/img/Zelda 2.png" alt="Zelda 2: adventure of link image"></a>
+            </div>
+            
         </section>
 
-        <section>
+        <section class="section_categories">
 
             <h3>Categories</h3>
-            <div>
-                <img src="./storage/img/Bosses.png" alt="Bosses pic">
-                <a href="#">Bosses</a>
+
+            <div class="categories_group">
+                <div>
+                    <img src="./storage/img/Bosses.png" alt="Bosses pic">
+                    <a href="#">Bosses</a>
+                </div>
+    
+                <div>
+                    <img src="./storage/img/Characters.png" alt="Characters pic">
+                    <a href="#">Characters</a>
+                </div>
             </div>
 
-            <div>
-                <img src="./storage/img/Characters.png" alt="Characters pic">
-                <a href="#">Characters</a>
+            <div class="categories_group">
+                <div>
+                    <img src="./storage/img/Dungeons.png" alt="Dungeons pic">
+                    <a href="#">Dungeons</a>
+                </div>
+    
+                <div>
+                    <img src="./storage/img/Monsters.png" alt="Monsters pic">
+                    <a href="#">Monsters</a>
+                </div>
             </div>
 
-            <div>
-                <img src="./storage/img/Dungeons.png" alt="Dungeons pic">
-                <a href="#">Dungeons</a>
+            <div class="categories_group">
+                <div>
+                    <img src="./storage/img/Places.png" alt="Places pic">
+                    <a href="#">Places</a>
+                </div>
+    
+                <div>
+                    <img src="./storage/img/Items.png" alt="Items pic">
+                    <a href="#">Items</a>
+                </div>
             </div>
 
-            <div>
-                <img src="./storage/img/Monsters.png" alt="Monsters pic">
-                <a href="#">Monsters</a>
-            </div>
-
-            <div>
-                <img src="./storage/img/Places.png" alt="Places pic">
-                <a href="#">Places</a>
-            </div>
-
-            <div>
-                <img src="./storage/img/Items.png" alt="Items pic">
-                <a href="#">Items</a>
-            </div>
-
-            <div>
-                <img src="./storage/img/Staff.png" alt="Staff pic">
-                <a href="#">Staff</a>
+            <div class="categories_group">
+                <div>
+                    <img src="./storage/img/Staff.png" alt="Staff pic">
+                    <a href="#">Staff</a>
+                </div>
             </div>
 
         </section>
