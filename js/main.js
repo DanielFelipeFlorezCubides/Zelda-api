@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Función para crear una tarjeta de juego
     function createGameCard(game) {
         const gameLink = document.createElement("a");
-        gameLink.href = `game-details.html?id=${game.id}`;
+        gameLink.href = `views/game-details.html?id=${game.id}`;
         
         const gameImage = document.createElement("img");
         // Extraer el nombre corto del juego para buscar la imagen correspondiente
@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         link.addEventListener("click", (e) => {
             e.preventDefault();
             const category = link.textContent.toLowerCase();
-            window.location.href = `category.html?type=${category}`;
+            window.location.href = `views/category.html?type=${category}`;
         });
     });
 });
