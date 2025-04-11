@@ -337,7 +337,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const nameMap = {
             "The Legend of Zelda": "",
             "The Legend of Zelda: A Link to the Past": "ALTP",
-            "The Legend of Zelda: Ocarina of Time": "OoT",
+            "The Legend of Zelda: Ocarina of Time": "Oot",
             "The Legend of Zelda: Majora's Mask": "MM",
             "The Legend of Zelda: The Wind Waker": "WW",
             "The Legend of Zelda: Twilight Princess": "TP",
